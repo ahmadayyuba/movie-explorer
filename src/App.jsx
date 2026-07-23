@@ -10,6 +10,7 @@ import { VideoIcon } from "./components/icons/icons";
 import { CastCard } from "./components/card/CastCard";
 import { MovieCard } from "./components/card/MovieCard";
 import { FavoriteCard } from "./components/card/FavoriteCard";
+import { Footer} from "./components/layout/Footer";
 
 
 export default function App() {
@@ -119,6 +120,16 @@ export default function App() {
           />
         </div>
       </section>
+
+{/* PREVIEW FOOTER DESKTOP */}
+      <section className="p-6 bg-neutral-900 border border-neutral-800 rounded-xl flex flex-col gap-3">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+          15. Component: Footer Desktop
+        </h2>
+        <div className="w-full">
+          <Footer />
+        </div>
+      </section>
     </div>
-  );
+  );  
 };

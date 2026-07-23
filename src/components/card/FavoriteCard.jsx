@@ -16,21 +16,26 @@ export const FavoriteCard = ({
 }) => {
     return (
         <div 
-        className="flex items-start gap-6 w-full h-full"
+        className="flex items-start gap-3 w-full h-full md:gap-6 select-none p-3 md:p-0 rounded-2xl md:bg-transparent"
         {...props}>
 
 
-            <div className="w-52 h-80 aspect-[2/3] overflow-hidden ">
+            <div className="relative w-52 md:w-52 h-80 aspect-[2/3] overflow-hidden md:rounded-2xl rounded-xl ">
                 <img 
                     src={posterUrl}
                     alt={title}
-                    className="w-full h-full object-cover rounded-2xl"
+                    className="w-full h-full object-cover"
                     />
             </div>
 
     {/* 1. Detail Info Film */}
-            <div className="text-white flex flex-col mt-1 gap-3 flex-1 ">
-            <h3 className="font-bold text-2xl leading-tight">{title}</h3>
+            <div className="text-white flex flex-col md:gap-3 flex-1 gap-1.5 min-w-0 mt-0.5">
+
+            <div className="flex items-start justify-between gap-2">
+            <h3 className="font-bold text-base md:text-2xl leading-tight md:leading-tight line-clamp-2 md:line-clamp-none">    
+            {title}
+            </h3>
+            </div>
 
             <div >
                 <Badge 
@@ -41,7 +46,9 @@ export const FavoriteCard = ({
                 </Badge>
             </div>
 
-            <p className="text-neutral-500 text-base ">{description}</p>
+            <p className="text-neutral-500 text-base md:text-sm leading-relaxed">{
+            description}
+            </p>
 
                 <div className="mt-1"> 
                 <Button
