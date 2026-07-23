@@ -8,7 +8,7 @@ export const ScrollButton = ({direction = "up", onClick, ...props}) => {
         <button
             type="button"
             onClick={onClick}
-            className="bg-red-900 p-3 rounded-full border border-neutral-950 hover:bg-red-800"
+            className="bg-red-900 p-3 rounded-full border border-neutral-950 hover:bg-red-800 cursor-pointer"
             {...props}
         >
         

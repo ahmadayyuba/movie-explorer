@@ -234,3 +234,28 @@ export const WhatsappIcon = ({className, ...props }) => (
     </svg>
 );
 
+// 21. Rank Icon
+
+export const RankBadge = ({ className, ...props}) => (
+<svg 
+    width="48" 
+    height="48" 
+    viewBox="0 0 48 48" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+>
+    <foreignObject x="-34.2857" y="-34.2857" width="116.571" height="116.571">
+    <div xmlns="http://www.w3.org/1999/xhtml" style={{ backdropFilter: 'blur(17.14px)', clipPath: 'url(#bgblur_0_22417_289_clip_path)', height: '100%', width: '100%' }}></div>
+    </foreignObject>
+    <g data-figma-bg-blur-radius="34.2857">
+    <path d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z" fill="#0A0D12" fillOpacity="0.6"/>
+    <path d="M21.148 19.2V16.878H25.486V30H22.894V19.2H21.148Z" fill="#FDFDFD"/>
+    </g>
+    <defs>
+    <clipPath id="bgblur_0_22417_289_clip_path" transform="translate(34.2857 34.2857)">
+        <path d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z"/>
+    </clipPath>
+    </defs>
+</svg>
+);

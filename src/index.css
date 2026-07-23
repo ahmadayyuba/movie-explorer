@@ -1,41 +1,31 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
 @import "tailwindcss";
 
-
 @theme {
-
-/* Color Neutral */
-    --color-neutral-25: #FDFDFD; 
-    --color-neutral-50: #FAFAFA; 
-    --color-neutral-100: #F5F5F5;
-    --color-neutral-200: #E9EAEB;
-    --color-neutral-300: #D5D7DA;
-    --color-neutral-400: #A4A7AE;  
-    --color-neutral-500: #717680;
-    --color-neutral-600: #535862;
-    --color-neutral-700: #414651;
-    --color-neutral-800: #252B37;
-    --color-neutral-950: #0A0D12;
+  /* Color Neutral */
+  --color-neutral-25: #FDFDFD; 
+  --color-neutral-50: #FAFAFA; 
+  --color-neutral-100: #F5F5F5;
+  --color-neutral-200: #E9EAEB;
+  --color-neutral-300: #D5D7DA;
+  --color-neutral-400: #A4A7AE;  
+  --color-neutral-500: #717680;
+  --color-neutral-600: #535862;
+  --color-neutral-700: #414651;
+  --color-neutral-800: #252B37;
+  --color-neutral-950: #0A0D12;
     
-/*Color Primary*/
+  /* Color Primary */
+  --color-primary-100: #F3EBFF;
+  --color-primary-200: #8B32FF;
+  --color-primary-300: #6600EB;
+  --color-primary-400: #160131;  
 
-    --color-primary-100: #F3EBFF;
-    --color-primary-200: #8B32FF;
-    --color-primary-300: #6600EB;
-    --color-primary-400: #160131;  
+  /* Color Base */
+  --color-base-White: #FFFFFF;
+  --color-base-Black: #000000;
 
-/*Color Base*/
-    
-    --color-base-White: #FFFFFF;
-    --color-base-Black: #000000;
-
-    
-/* ======================================================= */
-  /* SETUP RADIUS
-  /* ======================================================= */
-
+  /* SETUP RADIUS */
   --radius-none: 0px;
   --radius-xxs: 2px;
   --radius-xs: 4px;
@@ -43,16 +33,12 @@
   --radius-md: 8px;
   --radius-lg: 10px;
   --radius-xl: 12px;
-  --raduis-2xl: 16px;
+  --radius-2xl: 16px; /* Memperbaiki typo --raduis-2xl */
   --radius-3xl: 20px;
   --radius-4xl: 24px;
   --radius-full: 9999px;
 
-  /* ======================================================= */
   /* SETUP SPACING */
-  /* ======================================================= */
-
-
   --spacing-none: 0px;
   --spacing-xxs: 2px;
   --spacing-xs: 4px;
@@ -71,50 +57,7 @@
   --spacing-10xl: 128px;
   --spacing-11xl: 140px;
 
-/* ======================================================= */
-  /* SETUP TYPOGRAPHY (FONT SIZE & LINE HEIGHT)             */
-  /* ======================================================= */
-  
-  /* Display 3xl (60px / 72px) */
-  --text-display-3xl: 60px;
-  --text-display-3xl--line-height: 72px;
-
-  /* Display 2xl (48px / 60px) */
-  --text-display-2xl: 48px;
-  --text-display-2xl--line-height: 60px;
-
-  /* Display xl (40px / 56px) */
-  --text-display-xl: 40px;
-  --text-display-xl--line-height: 56px;
-
-  /* Display lg (36px / 48px) */
-  --text-display-lg: 36px;
-  --text-display-lg--line-height: 48px;
-
-  /* Display md (32px / 46px) */
-  --text-display-md: 32px;
-  --text-display-md--line-height: 46px;
-
-  /* Display sm (28px / 38px) */
-  --text-display-sm: 28px;
-  --text-display-sm--line-height: 38px;
-
-  /* Display xs (24px / 36px) */
-  --text-display-xs: 24px;
-  --text-display-xs--line-height: 36px;
-
-  /* Text xl (20px / 30px) */
-  --text-body-xl: 20px;
-  --text-body-xl--line-height: 30px;
-
-  /* Text lg (18px / 28px) */
-  --text-body-lg: 18px;
-  --text-body-lg--line-height: 28px;
-/* ======================================================= */
-  /* SETUP TYPOGRAPHY (FONT SIZE & LINE HEIGHT)             */
-  /* ======================================================= */
-  
-  /* 1. Kelompok Judul (Display) */
+  /* SETUP TYPOGRAPHY */
   --text-display-3xl: 60px;
   --text-display-3xl--line-height: 72px;
 
@@ -136,7 +79,6 @@
   --text-display-xs: 24px;
   --text-display-xs--line-height: 36px;
 
-  /* 2. Kelompok Teks Biasa (Menimpa & Menambahkan Standar Tailwind) */
   --text-xl: 20px;
   --text-xl--line-height: 34px;
 
@@ -152,7 +94,6 @@
   --text-xs: 12px;
   --text-xs--line-height: 24px;
 
-  
-  /*Font*/
+  /* Font Family */
   --font-sans: 'Poppins', sans-serif;
 }

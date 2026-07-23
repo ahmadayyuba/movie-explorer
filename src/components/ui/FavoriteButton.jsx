@@ -34,7 +34,7 @@ export const FavoriteButton = ({ isFavorite: initialFavorite = false, onClick, .
     return (
         <button 
             type="button" 
-            className="bg-neutral-800 border rounded-full border-neutral-900 p-2 hover:bg-neutral-700 transition-colors" 
+            className="bg-neutral-800 border rounded-full border-neutral-900 p-2 hover:bg-neutral-700 transition-colors cursor-pointer" 
             onClick={handleToggle} // 4. Panggil handleToggle pas diklik
             {...props}
         >
