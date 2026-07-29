@@ -13,7 +13,7 @@ export const Button = ({
 
     const variants = {
         
-        primary :"bg-red-900 text-white hover:bg-red-700 shadow-md shadow-red-900/30",
+        primary :"bg-red-900 text-white hover:bg-red-700 shadow-md shadow-red-900/3",
         
         secondary:"bg-neutral-900/80 text-white border border-neutral-700 hover:bg-neutral-800"
     };

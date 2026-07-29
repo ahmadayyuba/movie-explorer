@@ -9,7 +9,7 @@ export const SearchBar = ({
 }) => {
     return (
 
-        <div className=" max-w-80 h-12 bg-neutral-800 rounded-2xl flex items-center px-5 gap-3 border border-neutral-500">
+        <div className=" max-w-64 h-12 bg-neutral-900 rounded-2xl flex items-center px-5 gap-3">
 
             <SearchIcon className="w-5 h-5 text-neutral-500"/>
 

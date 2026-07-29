@@ -8,7 +8,7 @@ export const CastCard = ({
 }) => {
     return (
         <div 
-            className="flex items-center gap-3 rounded-xl cursor-pointer bg-neutral" 
+            className="flex items-center gap-3 rounded-xl cursor-pointer bg-neutral " 
             {...props}
         >
             <img 
@@ -18,8 +18,8 @@ export const CastCard = ({
             />
 
             <div className="text-white p-2">
-                <h4 className="font-semibold ">{name}</h4>
-                <p className="font-light text-neutral-500 pt-2">{role}</p>
+                <h4 className="font-semibold text-md">{name}</h4>
+                <p className="font-light text-neutral-500 text-md">{role}</p>
             </div>
         </div>
     );

@@ -8,14 +8,14 @@ export const Footer = ({
     return (
 
         <footer 
-            className="flex items-center justify-between px-32 md:20 py-6 bg-neutral-950 w-full"
+            className="flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 md:px-20 py-6 min-h-[120px] bg-neutral-950 w-full border-t border-neutral-800 select-none gap-4 md:gap-0"
         {...props}
         >
-            <div>
+            <div className="flex items-center">
                 <Logo/>
             </div>
 
-            <div className="text-xs md:text-sm text-neutral-600 font-normal">
+            <div className="text-xs md:text-sm text-neutral-600 font-normal text-center md:text-neutral-600 md:text-right">
                 <p>{copyrightText}</p>
             </div>
         </footer>

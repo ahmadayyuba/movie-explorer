@@ -16,11 +16,12 @@ export const FavoriteCard = ({
 }) => {
     return (
         <div 
-        className="flex items-start gap-3 w-full h-full md:gap-6 select-none p-3 md:p-0 rounded-2xl md:bg-transparent"
+        className="flex flex-col md:flex-row md:items-start justify-between  items-start gap-4 max-w-290 md:gap-6 select-none p-4 md:p-0 "
         {...props}>
 
 
-            <div className="relative w-52 md:w-52 h-80 aspect-[2/3] overflow-hidden md:rounded-2xl rounded-xl ">
+        <div className="flex gap-3.5 sm:gap-4 md:contents">
+            <div className="relative w-28 sm:w-36 md:w-48 h-80 aspect-2/3 overflow-hidden md:rounded-2xl rounded-xl shrink-0">
                 <img 
                     src={posterUrl}
                     alt={title}
@@ -28,29 +29,26 @@ export const FavoriteCard = ({
                     />
             </div>
 
-    {/* 1. Detail Info Film */}
-            <div className="text-white flex flex-col md:gap-3 flex-1 gap-1.5 min-w-0 mt-0.5">
-
-            <div className="flex items-start justify-between gap-2">
-            <h3 className="font-bold text-base md:text-2xl leading-tight md:leading-tight line-clamp-2 md:line-clamp-none">    
-            {title}
-            </h3>
-            </div>
-
+            {/* 1. Detail Info Film */}
+            <div className="text-white flex flex-col flex-1 justify-start md:justify-between min-w-0 md:gap-3  gap-1.5 sm:gap-2">
+                <h3 className="font-bold text-base sm:text-lg md:text-2xl leading-tight line-clamp-2">    
+                {title}
+                </h3>
+            
             <div >
                 <Badge 
                     variant="rating"
-                    className= "flex items-center gap-2"
+                    className= "flex items-center gap-2 text-xs sm:text-sm"
                     >{rating}
                     
                 </Badge>
             </div>
 
-            <p className="text-neutral-500 text-base md:text-sm leading-relaxed">{
+            <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-2 ">{
             description}
             </p>
 
-                <div className="mt-1"> 
+                <div className=" hidden md:block mt-2"> 
                 <Button
                     variant="primary"
                     icon={VideoIcon}
@@ -60,10 +58,27 @@ export const FavoriteCard = ({
                 </Button>
                 </div>
             </div>
-  {/* 2. Tombol Favorite (Hati) */}
+        </div>
 
-            <div className="shrink-0">
-                <FavoriteButton onClick={onFavoriteClick}/>
+        {/* 2. Tombol Favorite (Hati) */}
+            <div className="flex items-center justify-between gap-3 md:hidden w-full pt-1">
+                <Button
+                    variant="primary"
+                    icon={VideoIcon}
+                    onClick={onWatchTrailer}
+                    className="flex-1 text-xs sm:text-sm py-2 px-4"
+                >
+                    Watch Trailer
+                </Button>
+
+                <div className="shrink-0">
+                    <FavoriteButton onClick={onFavoriteClick} />
+                </div>
+            </div>
+
+            {/* 3. TOMBOL FAVORITE (KHUSUS DESKTOP - POJOK KANAN ATAS) */}
+            <div className="hidden md:block shrink-0">
+                <FavoriteButton onClick={onFavoriteClick} />
             </div>
         </div>
     );
