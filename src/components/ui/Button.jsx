@@ -4,12 +4,13 @@ export const Button = ({
     children, 
     variant = "primary", 
     icon: Icon = null, 
+    iconPosition ="right",
     onClick, 
     className = "", 
     ...props 
 }) => {
 
-    const baseStyle = "flex items-center justify-center gap-2 rounded-full px-6 py-3 font-medium transition-all duration-300 cursor-pointer";
+    const baseStyle = "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-8 py-3 font-medium transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 w-full sm:w-auto";
 
     const variants = {
         
@@ -24,10 +25,11 @@ export const Button = ({
             className={`${baseStyle} ${variants[variant] || variants.primary} ${className}`}
             {...props}
         >
-            {Icon && <Icon className="w-4 h-4" />}
+            {Icon && iconPosition === "left" && <Icon className="w-5 h-5 shrink-0" />}
 
             <span>{children}</span>
 
+            {Icon && iconPosition === "right" && <Icon className="w-5 h-5 shrink-0" />}
         </button>
     );
 };

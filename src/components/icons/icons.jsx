@@ -291,3 +291,22 @@ export const HappyIcon = ({ className = "w-6 h-6", ...props }) => (
         />
     </svg>
 );
+
+export const PlayIcon = ({ className = "w-5 h-5", ...props }) => (
+    <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...props}
+    >
+    <circle cx="11" cy="11" r="10" fill="#FDFDFD" />
+    <path
+        d="M9.5 7.5L14.5 11L9.5 14.5V7.5Z"
+        fill="#7F1D1D" 
+    />
+    </svg>
+);
+

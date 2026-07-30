@@ -1,16 +1,22 @@
 import React from "react";
-import { Hero } from "./components/section/Hero"; // Sesuaikan path jika lokasi foldernya berbeda
+import { Hero } from "./components/section/Hero";
+import { Header } from "./components/layout/Header";
+import { ScrollButton } from "./components/ui/ScrollButton";
 
 export function App() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white ">
-      {/* Tampilkan Hero Banner di paling atas */}
-      <Hero 
-        onWatchTrailer={(movie) => console.log("Watch Trailer for:", movie.title)}
-        onSeeDetail={(movieId) => console.log("See Detail for ID:", movieId)}
-      />
+    <div className="min-h-screen bg-neutral-950 text-white relative">
+      {/* 1. Render Header di paling atas (sebelum Hero) */}
+      <Header />
 
-      {/* Komponen preview/halaman lainnya di bawah sini */}
+      {/* 2. Hero Banner */}
+      <main>
+        <Hero 
+          onWatchTrailer={(movie) => console.log("Watch Trailer for:", movie.title)}
+          onSeeDetail={(movieId) => console.log("See Detail for ID:", movieId)}
+        />
+      </main>
+      <ScrollButton />
     </div>
   );
 }

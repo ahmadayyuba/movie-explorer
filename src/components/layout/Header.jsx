@@ -9,8 +9,8 @@ export const Header = () => {
     
     return (
 
-        <header className="w-full min-h-1 bg-neutral-950/90 sticky top-0 z-50 backdrop-blur-md border-b border-neutral-800/80 select-none transition-all duration-300 "> 
-            <div className="container flex items-center justify-between mx-auto px-6 md:px-20 h-20 ">
+        <header className="w-full fixed top-0 left-0 right-0 min-h-1 bg-neutral-950/90 z-50 backdrop-blur-md border-b border-neutral-800/80 select-none transition-all duration-300 "> 
+            <div className="max-w-[1120px] flex items-center justify-between mx-auto px-4 sm:px-8 md:px-20 h-20">
 
                 {/* --- BAGIAN KIRI: LOGO & NAV DESKTOP --- */}
                 <div className="flex items-center gap-10">
