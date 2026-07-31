@@ -14,7 +14,7 @@ export const MovieCard = ({
     return (
         <div 
             onClick={onClick}
-            className="group cursor-pointer flex flex-col gap-2 w-[173px] md:w-48 items-start bg-transparent shrink-0 select-none "
+            className="group cursor-pointer flex flex-col gap-2 w-full md:w-48 items-start bg-transparent shrink-0 select-none "
             {...props}
         >
             <div className="relative w-full h-[266px] md:aspect-[2/3] md:h-auto md:rounded-2xl rounded-xl overflow-hidden bg-neutral-900">
@@ -24,8 +24,8 @@ export const MovieCard = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                 />
         {rank && (
-            <div className="absolute top-2 left-2 z-10 w-8 h-8 flex items-center justify-between">
-                <RankBadge className="w-10 h-10"/>
+            <div className="absolute top-2 left-2 z-10 w-12 h-12 rounded-full bg-neutral-950/80 backdrop-blur flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-md">
+                {rank}
             </div>
         )}
             </div>
