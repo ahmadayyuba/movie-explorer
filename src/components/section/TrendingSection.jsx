@@ -22,7 +22,7 @@ export const TrendingSection = ({onSelectMovie}) => {
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
-            const scrollAmount = direction === "left" ? -600 : 600 ;
+            const scrollAmount = direction === "left" ? -500 : 600 ;
             carouselRef.current.scrollBy({
                 left: scrollAmount,
                 behavior: "smooth"
@@ -32,15 +32,15 @@ export const TrendingSection = ({onSelectMovie}) => {
 
     if (loading) {
         return (
-            <section className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-10 ">
-                <h2 className="text-2xl font-bold text-white mb-6"></h2>
+            <section className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+                <h2 className="text-2xl font-bold text-white mb-6">Trending Now</h2>
                 <div className="flex gap-4 overflow-hidden">
                     {[...Array(5)].map((_, i) => (
-                        <div key={i} className="animate-pulse flex flex-col gap-2 w-[180px] shrink-0">
+                        <div key={i} className="animate-pulse flex flex-col gap-2 w-[180px] sm:w-[170px]] shrink-0">
                             <div className="w-full aspect-[2/3] bg-neutral-800 rounded-2xl"></div>
                             <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
                             <div className="h-3 bg-neutral-800 rounded w-1/2"></div>
-                        </div>
+                        </div>                                          
                     ))}
                 </div>
             </section>
@@ -48,8 +48,8 @@ export const TrendingSection = ({onSelectMovie}) => {
     }
 
     return (
-        <section className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-10 relative group select-none">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-10 tracking-tight">
+        <section className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-18 sm:py-10 relative group select-none">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-white mb-4 tracking-tight">
                 Trending Now
             </h2>
 
@@ -94,7 +94,7 @@ export const TrendingSection = ({onSelectMovie}) => {
 
             <button
                 onClick={() => handleScroll("right")}
-                className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/80 border border-neutral-700 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-neutral-800 cursor-pointer hidden md:flex"
+                className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/80 border border-neutral-700 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-neutral-800 cursor-pointer hidden md:flex shadow-lg"
                 aria-label="Scroll Right"
             >
                 ›

@@ -63,20 +63,23 @@ return (
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center flex-wrap gap-3 pt-2 w-full sm:w-auto">
-          <a href="https://youtu.be/62bIsvRcPv0?si=GqPs9w3ymxjKfmDh">
-          <Button
-            variant="primary"
-            icon={PlayIcon}
-            iconPosition="right"
-            className="w-full sm:w-auto flex-1"
-            onClick={() => onWatchTrailer && onWatchTrailer(movie)}
+          
+            <Button
+              variant="primary"
+              icon={PlayIcon}
+              iconPosition="right"
+              className="w-full sm:w-auto flex-1"
+              onClick={() => {
+              if (onWatchTrailer) onWatchTrailer(movie);
+              window.open("https://youtu.be/62bIsvRcPv0?si=GqPs9w3ymxjKfmDh", "_blank", "noopener,noreferrer");}}
           >
             Watch Trailer
           </Button>
-        </a>
+
+          
           <Button
             variant="secondary"
-            className="w-full sm:autofill: flex-1"
+            className="w-full sm:w-auto flex-1"
             onClick={() => onSeeDetail && onSeeDetail(movie.id)}
           >
             See Detail

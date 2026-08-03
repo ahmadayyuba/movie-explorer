@@ -3,6 +3,7 @@ import { Hero } from "./components/section/Hero";
 import { Header } from "./components/layout/Header";
 import { ScrollButton } from "./components/ui/ScrollButton";
 import { TrendingSection } from "./components/section/TrendingSection";
+import { ExploreSection } from "./components/section/ExploreSection";
 
 export function App() {
   return (
@@ -21,6 +22,12 @@ export function App() {
         <TrendingSection 
           onSelectMovie={(movieId) => console.log("Selected Movie ID:", movieId)} 
         />
+
+        {/* 3. Section Explore More (Grid 5 Kolom + Load More) */}
+        <ExploreSection 
+          onSelectMovie={(movieId) => console.log("Selected Movie ID:", movieId)}
+        />
+        
       </main>
       <ScrollButton />
     </div>
