@@ -16,19 +16,6 @@ export const getTrendingMovies = async () => {
     }
 };
 
-export const getMovieDetails = async (movieId) => {
-    try {
-        const response = await fetch(
-            `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=credits`
-        );
-        if (!response.ok) throw new Error("Gagal mengambil detail film");
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching movie details", error);
-        return null;
-    }
-};
-
 export const getPopularMovies = async (page = 1) => {
     try {
         const response = await fetch(
@@ -39,5 +26,19 @@ export const getPopularMovies = async (page = 1) => {
     } catch (error) {
         console.error("Error fetching popular movies:", error);
         return [];
+    }
+};
+
+// Helper Function: Ambil Detail Film + Cast (Credits) + Videos
+export const getMovieDetails = async (movieId) => {
+    try {
+        const response = await fetch(
+            `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=credits,videos`
+        );
+        if (!response.ok) throw new Error("Gagal mengambil detail film");
+        return await response.json();
+    } catch (error) {
+    console.error("Error fetching movie details:", error);
+    return null;
     }
 };

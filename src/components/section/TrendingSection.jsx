@@ -58,10 +58,10 @@ export const TrendingSection = ({onSelectMovie}) => {
             
             <button
                 onClick={() => handleScroll("left")}
-                className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/80 border border-neutral-700 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-neutral-800 cursor-pointer hidden md:flex"
+                className="absolute -left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
                 aria-label="Scroll Left"
             >
-                ‹
+                <span className="-mt-0.5">‹</span>
             </button>
 
 
@@ -94,10 +94,10 @@ export const TrendingSection = ({onSelectMovie}) => {
 
             <button
                 onClick={() => handleScroll("right")}
-                className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/80 border border-neutral-700 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-neutral-800 cursor-pointer hidden md:flex shadow-lg"
+                className="absolute -right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
                 aria-label="Scroll Right"
             >
-                ›
+            <span className="-mt-0.5">›</span>
                 </button>
             </div>
         </section>

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { getPopularMovies, IMAGE_BASE_URL} from "../../services/tmdb";
 import { MovieCard } from "../card/MovieCard";
 
-export const  ExploreSection = ({oneSelectMovie}) => {
+export const  ExploreSection = ({onSelectMovie}) => {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [loadingInitial, setLoadingInitial] = useState(true);

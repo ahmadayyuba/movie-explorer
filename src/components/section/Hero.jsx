@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+
 import { Button } from "../ui/Button";
 import { PlayIcon, VideoIcon } from "../icons/icons";
 import { getTrendingMovies, IMAGE_BASE_URL } from "../../services/tmdb";
 
 export const Hero = ({onWatchTrailer, onSeeDetail,...props}) => {
+
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
 

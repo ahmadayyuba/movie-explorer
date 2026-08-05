@@ -8,7 +8,7 @@ export const Footer = ({
     return (
 
         <footer 
-            className="flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 md:px-20 py-6 min-h-[120px] bg-neutral-950 w-full border-t border-neutral-800 select-none gap-4 md:gap-0"
+            className="flex md:flex-row justify-between px-4 sm:px-6 md:px-20 py-6 min-h-[120px] bg-neutral-950  w-full border-neutral-800 select-none md:gap-10 gap-4 mx-auto"
         {...props}
         >
             <div className="flex items-center">
