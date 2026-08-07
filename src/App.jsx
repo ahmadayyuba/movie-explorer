@@ -1,10 +1,16 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import DetailPage from "./pages/DetailPage";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Impor default (TANPA kurung kurawal {})
+import HomePage from './pages/HomePage';
+import DetailPage from './pages/DetailPage';
 
 export function App() {
   return (
     <Router>
-      <DetailPage />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movie/:movieId" element={<DetailPage />} />
+      </Routes>
     </Router>
   );
 }

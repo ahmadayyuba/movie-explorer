@@ -34,7 +34,7 @@ export const MovieCard = ({
             onClick={onClick}
 
             style={{
-                transition: "transform 0,4s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0.3s"
+                transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0.3s"
             }}
 
             className="group cursor-pointer flex flex-col gap-2  items-start bg-transparent shrink-0 select-none hover:scale-105 hover:z-20"

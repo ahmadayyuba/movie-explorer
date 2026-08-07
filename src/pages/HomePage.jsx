@@ -1,37 +1,42 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "../components/layout/Header";
 import { Hero } from "../components/section/Hero";
 import { TrendingSection } from "../components/section/TrendingSection";
 import { ExploreSection } from "../components/section/ExploreSection";
 import { ScrollButton } from "../components/ui/ScrollButton";
 
-
 const HomePage = () => {
+    const navigate = useNavigate();
+
+    // Fungsi Navigasi ke Detail Page
+    const handleSelectMovie = (movieId) => {
+        if (movieId) {
+            navigate(`/movie/${movieId}`);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-neutral-950 text-white relative">
             <Header/>
 
-      {/* 2. Hero Banner */}
-    <main>
-        <Hero 
-            onWatchTrailer={(movie) => console.log("Watch Trailer for:", movie.title)}
-            onSeeDetail={(movieId) => console.log("See Detail for ID:", movieId)}
-        />
+            <main>
+                <Hero 
+                    onWatchTrailer={(movie) => console.log("Watch Trailer for:", movie.title)}
+                    onSeeDetail={handleSelectMovie} // <-- Hubungkan ke handleSelectMovie
+                />
 
-        {/* Section Trending Now */}
-        <TrendingSection 
-            onSelectMovie={(movieId) => console.log("Selected Movie ID:", movieId)} 
-        />
+                <TrendingSection 
+                    onSelectMovie={handleSelectMovie} // <-- Hubungkan ke handleSelectMovie
+                />
 
-        {/* 3. Section Explore More (Grid 5 Kolom + Load More) */}
-        <ExploreSection 
-            onSelectMovie={(movieId) => console.log("Selected Movie ID:", movieId)}
-        />
-        
-    </main>
-        <ScrollButton />
-    </div>
-  );
-}
+                <ExploreSection 
+                    onSelectMovie={handleSelectMovie} // <-- Hubungkan ke handleSelectMovie
+                />
+            </main>
+            <ScrollButton />
+        </div>
+    );
+};
 
 export default HomePage;

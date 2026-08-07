@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { SearchIcon, MenuIcon, XIcon, ArrowLeftIcon } from "../icons/icons";
 import { SearchBar } from "../search/SearchBar";
 import { Logo } from "./Logo";
 
 export const Header = () => {
+    const navigate = useNavigate(); 
+    const location = useLocation(); 
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-    
-    // 1. Perbaikan typo variabel state
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -23,8 +25,9 @@ export const Header = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+        const isActive = (path) => location.pathname === path;
+
     return (
-        // 2. Hubungkan state isScrolled ke class Tailwind Header
         <header 
             className={`w-full fixed top-0 left-0 right-0 z-50 select-none transition-all duration-300 ${
                 isScrolled 
@@ -56,17 +59,33 @@ export const Header = () => {
                     /* --- TAMPILAN NORMAL HEADER --- */
                     <> 
                         <div className="flex items-center gap-10">
-                            <a href="#" className="flex items-center text-xl font-bold tracking-tight text-white">
+                            <button 
+                                type="button"
+                                onClick={() => navigate("/")} 
+                                className="flex items-center text-xl font-bold tracking-tight text-white cursor-pointer hover:opacity-80 transition-opacity"
+                            >
                                 <Logo />
-                            </a>
+                            </button>
 
                             <nav className="hidden md:flex items-center gap-6 font-medium text-white">
-                                <a href="#" className="text-red-600 font-semibold transition-colors duration-200">
+                                <button 
+                                    type="button"
+                                    onClick={() => navigate("/")} 
+                                    className={`font-semibold transition-colors duration-200 cursor-pointer ${
+                                        isActive("/") ? "text-red-600" : "text-white hover:text-red-600"
+                                    }`}
+                                >
                                     Home
-                                </a>
-                                <a href="#" className="hover:text-red-600 font-semibold transition-colors duration-200">
+                                </button>
+                                <button 
+                                    type="button"
+                                    onClick={() => navigate("/favorites")} 
+                                    className={`font-semibold transition-colors duration-200 cursor-pointer ${
+                                        isActive("/favorites") ? "text-red-600" : "text-white hover:text-red-600"
+                                    }`}
+                                >
                                     Favorites
-                                </a>
+                                </button>
                             </nav>
                         </div>
 
@@ -102,23 +121,30 @@ export const Header = () => {
                 )}
             </div>
 
-            {/*  DRAWER MENU MOBILE */}
             {isMenuOpen && !isMobileSearchOpen && (
                 <div className="md:hidden bg-neutral-950/95 border-b border-neutral-800 flex flex-col items-start px-6 py-6 gap-3 font-medium text-base transition-all duration-200 shadow-xl min-h-screen">
-                    <a 
-                        href="#" 
-                        className="text-red-600 font-semibold py-1 w-full" 
-                        onClick={() => setIsMenuOpen(false)}
+                    <button 
+                        className={`font-semibold py-1 w-full text-left cursor-pointer ${
+                            isActive("/") ? "text-red-600" : "text-white hover:text-red-600"
+                        }`}
+                        onClick={() => {
+                            navigate("/");
+                            setIsMenuOpen(false);
+                        }}
                     >
                         Home
-                    </a>
-                    <a 
-                        href="#" 
-                        className="text-white hover:text-red-600 py-1 w-full transition-colors" 
-                        onClick={() => setIsMenuOpen(false)}
+                    </button>
+                    <button 
+                        className={`font-semibold py-1 w-full text-left cursor-pointer ${
+                            isActive("/favorites") ? "text-red-600" : "text-white hover:text-red-600"
+                        }`}
+                        onClick={() => {
+                            navigate("/favorites");
+                            setIsMenuOpen(false);
+                        }}
                     >
                         Favorites
-                    </a>
+                    </button>
                 </div>
             )}
         </header>
