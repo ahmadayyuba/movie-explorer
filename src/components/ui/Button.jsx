@@ -10,7 +10,7 @@ export const Button = ({
     ...props 
 }) => {
 
-    const baseStyle = "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-8 py-3 font-medium transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 w-full sm:w-auto";
+    const baseStyle = "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-8 py-3 font-medium transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 w-full sm:w-auto ";
 
     const variants = {
         

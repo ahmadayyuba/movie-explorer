@@ -5,6 +5,7 @@ import { Hero } from "../components/section/Hero";
 import { TrendingSection } from "../components/section/TrendingSection";
 import { ExploreSection } from "../components/section/ExploreSection";
 import { ScrollButton } from "../components/ui/ScrollButton";
+import { Footer } from "../components/layout/Footer";
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ const HomePage = () => {
                 <ExploreSection 
                     onSelectMovie={handleSelectMovie} // <-- Hubungkan ke handleSelectMovie
                 />
+
+                <Footer/>
             </main>
             <ScrollButton />
         </div>
