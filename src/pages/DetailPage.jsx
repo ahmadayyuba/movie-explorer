@@ -9,6 +9,7 @@ import { CastCard } from "../components/card/CastCard";
 import { Toast } from "../components/ui/Toast";
 import { StarBoldIcon, VideoIcon, HappyIcon, CalendarIcon } from "../components/icons/icons";
 import { getMovieDetails, IMAGE_BASE_URL } from "../services/tmdb";
+import { isMovieFavorite, toggleFavoriteMovie } from "../services/favoriteService";
 
 const DetailPage = () => {
     const { movieId } = useParams();
@@ -25,6 +26,8 @@ const DetailPage = () => {
             if (movieId) {
                 const data = await getMovieDetails(movieId);
                 setMovie(data);
+
+                setIsFavorite(isMovieFavorite(movieId));
             }
             setLoading(false);
         };
@@ -34,7 +37,9 @@ const DetailPage = () => {
     }, [movieId]);
 
     const handleFavoriteToggle = () => {
-        setIsFavorite((prev) => !prev);
+        if (!movie) return;
+        const nowFavorite = toggleFavoriteMovie(movie);
+        setIsFavorite(nowFavorite);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
     };
@@ -66,7 +71,7 @@ const DetailPage = () => {
     const castList = movie.credits?.cast?.slice(0, 9) || [];
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white flex flex-col relative select-none overflow-hidden">
+        <div className="min-h-screen bg-neutral-950 text-white flex flex-col relative select-none overflow-x-hidden">
             {showToast && (
                 <div className="fixed top-30 left-1/2 -translate-x-1/2 z-50 transition-all duration-300">
                     <Toast message={isFavorite ? "Added to Favorites" : "Removed from Favorites"} />
@@ -88,16 +93,14 @@ const DetailPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/80 via-transparent to-transparent hidden md:block" />
             </div>
 
-            <main className="relative z-20 max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 -mt-44 sm:-mt-44 md:-mt-80 pb-16 flex-1 w-full">
-
+            <main className="relative z-20 max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 -mt-28 sm:-mt-44 md:-mt-80 pb-16 flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-end">
-
                     <div className="w-48 sm:w-60 md:w-72 shrink-0 rounded-2xl overflow-hidden border border-neutral-800/80 shadow-2xl mx-auto md:mx-0 bg-neutral-900">
                         <img src={posterUrl} alt={movie.title} className="w-full h-auto object-cover" />
                     </div>
 
                     <div className="flex-1 flex flex-col gap-4 w-full">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-white drop-shadow-lg">
+                        <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold leading-tight text-white drop-shadow-lg">
                             {movie.title || movie.name}
                         </h1>
 
@@ -106,7 +109,7 @@ const DetailPage = () => {
                             <span>{releaseDate}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 py-1">
+                        <div className="flex items-center gap-3 py-1 w-full justify-center md:justify-start">
                             <Button variant="primary" icon={VideoIcon} className="flex-1 md:flex-none !w-auto">
                                 Watch Trailer
                             </Button>
@@ -130,7 +133,7 @@ const DetailPage = () => {
 
                 <section className="w-full mt-10 md:mt-12 flex flex-col gap-6">
                     <h2 className="text-xl md:text-3xl font-bold text-white">Cast & Crew</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 w-full">
                         {castList.length > 0 ? (
                             castList.map((actor) => (
                                 <CastCard

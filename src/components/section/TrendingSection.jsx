@@ -67,7 +67,7 @@ export const TrendingSection = ({onSelectMovie}) => {
 
             <div
                 ref={carouselRef}
-                className="flex items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4"
+                className="flex items-center gap-8 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none"}}
             >
                 {movies.slice(0,20).map((item, index) => {

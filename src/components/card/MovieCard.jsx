@@ -25,16 +25,13 @@ export const MovieCard = ({
     return (
         <motion.div 
             initial={{ opacity:0, filter: "blur(10px)"}}
-
             whileInView={{opacity: 1, filter: "blur(0px)" }}
-
             viewport={{once: true, margin: "-50px"}}
-
             transition={{duration: 0.5, ease: "easeOut"}}
             onClick={onClick}
-
             style={{
                 transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0.3s"
+            
             }}
 
             className="group cursor-pointer flex flex-col gap-2  items-start bg-transparent shrink-0 select-none hover:scale-105 hover:z-20"
@@ -70,7 +67,7 @@ export const MovieCard = ({
             </div>
             <div className="flex flex-col gap-1 w-full">
                 {/* Judul Film */}
-                <h3 className="text-white font-semibold text-lg leading-snug line-clamp-2 transition-colors">
+                <h3 className="text-white font-medium text-xs sm:text-xs md:text-base leading-snug line-clamp-2 transition-colors">
                     {title}
                 </h3>
 

@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, {useState, useEffect} from "react";
 import { Badge } from "../ui";
 import { Button } from "../ui";
 import { FavoriteButton } from "../ui";
@@ -10,18 +9,34 @@ export const FavoriteCard = ({
     rating = "7.2/10",
     description= "After meeting with newly elected U.S. President Thaddeus Ross, Sam finds himself in the middle of an international incident. He must discover the reason behind a nefarious global plot before t...",
     posterUrl = "https://picsum.photos/300/450",
+    isFavorite = true,
     onWatchTrailer,
     onFavoriteClick,
     ...props 
 }) => {
+    
+    const [active, setActive] = useState(isFavorite);
+
+    useEffect(() => {
+        setActive(isFavorite);
+    }, [isFavorite]);
+
+    const handleClick = () => {
+        setActive(false);
+        if (onFavoriteClick) {
+            onFavoriteClick();
+        }
+    };
+
+
     return (
         <div 
-        className="flex flex-col md:flex-row md:items-start justify-between  items-start gap-4 max-w-290 md:gap-6 select-none p-4 md:p-0 "
+        className="flex flex-col md:flex-row md:items-start justify-between  items-start gap-4 max-w-290 md:gap-6 select-none p-4 md:p-0"
         {...props}>
 
 
         <div className="flex gap-3.5 sm:gap-4 md:contents">
-            <div className="relative w-28 sm:w-36 md:w-48 h-80 aspect-2/3 overflow-hidden md:rounded-2xl rounded-xl shrink-0">
+            <div className="relative w-28 sm:w-36 md:w-48 aspect-2/3 overflow-hidden md:rounded-2xl rounded-xl shrink-0">
                 <img 
                     src={posterUrl}
                     alt={title}
@@ -72,13 +87,13 @@ export const FavoriteCard = ({
                 </Button>
 
                 <div className="shrink-0">
-                    <FavoriteButton onClick={onFavoriteClick} />
+                    <FavoriteButton active={isFavorite} onClick={onFavoriteClick} />
                 </div>
             </div>
 
             {/* 3. TOMBOL FAVORITE (KHUSUS DESKTOP - POJOK KANAN ATAS) */}
             <div className="hidden md:block shrink-0">
-                <FavoriteButton onClick={onFavoriteClick} />
+                <FavoriteButton active={isFavorite} onClick={onFavoriteClick} />
             </div>
         </div>
     );
