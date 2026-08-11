@@ -1,3 +1,6 @@
+// File: src/services/favoriteService.js
+// HANYA JAVASCRIPT MURNI - TANPA JSX
+
 const FAVORITES_KEY = "movie_explorer_favorites";
 
 export const getFavoriteMovies = () => {

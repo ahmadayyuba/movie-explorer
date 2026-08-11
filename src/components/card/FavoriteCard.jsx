@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { Badge } from "../ui";
-import { Button } from "../ui";
-import { FavoriteButton } from "../ui";
+import { Badge } from "../ui/Badge";
+import { Button } from "../ui/Button";
+import { FavoriteButton } from "../ui/FavoriteButton";
 import { VideoIcon } from "../icons/icons";
 
 export const FavoriteCard = ({
@@ -14,20 +14,6 @@ export const FavoriteCard = ({
     onFavoriteClick,
     ...props 
 }) => {
-    
-    const [active, setActive] = useState(isFavorite);
-
-    useEffect(() => {
-        setActive(isFavorite);
-    }, [isFavorite]);
-
-    const handleClick = () => {
-        setActive(false);
-        if (onFavoriteClick) {
-            onFavoriteClick();
-        }
-    };
-
 
     return (
         <div 
@@ -35,12 +21,12 @@ export const FavoriteCard = ({
         {...props}>
 
 
-        <div className="flex gap-3.5 sm:gap-4 md:contents">
-            <div className="relative w-28 sm:w-36 md:w-48 aspect-2/3 overflow-hidden md:rounded-2xl rounded-xl shrink-0">
+        <div className="flex gap-8 sm:gap-6 md:contents">
+            <div className="relative w-36 sm:w-28 md:w-48 aspect-[2/3] overflow-hidden md:rounded-2xl rounded-xl shrink-0 -mx-5 lg:mx-1">
                 <img 
                     src={posterUrl}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover "
                     />
             </div>
 

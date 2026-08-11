@@ -8,28 +8,33 @@ import { MovieInfoCard } from "../components/card/MovieInfoCard";
 import { CastCard } from "../components/card/CastCard";
 import { Toast } from "../components/ui/Toast";
 import { StarBoldIcon, VideoIcon, HappyIcon, CalendarIcon } from "../components/icons/icons";
+import { useFavorites } from "../context/FavoriteContext";
 import { getMovieDetails, IMAGE_BASE_URL } from "../services/tmdb";
-import { isMovieFavorite, toggleFavoriteMovie } from "../services/favoriteService";
-
 const DetailPage = () => {
     const { movieId } = useParams();
     const navigate = useNavigate();
 
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isFavorite, setIsFavorite] = useState(false);
     const [showToast, setShowToast] = useState(false);
+
+
+    const {toggleFavorite, checkIsFavorite} = useFavorites();
+    const isFavorite = checkIsFavorite(movieId);
 
     useEffect(() => {
         const fetchDetails = async () => {
-            setLoading(true);
-            if (movieId) {
-                const data = await getMovieDetails(movieId);
-                setMovie(data);
-
-                setIsFavorite(isMovieFavorite(movieId));
+            try {
+                setLoading(true);
+                if (movieId) {
+                    const data = await getMovieDetails(movieId);
+                    setMovie(data);
+                }
+            } catch (error) {
+                console.error("Error fetching movie details:", error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
         fetchDetails();
@@ -38,8 +43,7 @@ const DetailPage = () => {
 
     const handleFavoriteToggle = () => {
         if (!movie) return;
-        const nowFavorite = toggleFavoriteMovie(movie);
-        setIsFavorite(nowFavorite);
+        toggleFavorite(movie);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
     };

@@ -5,32 +5,18 @@ import { Footer } from "../components/layout/Footer";
 import { Button } from "../components/ui/Button";
 import { FavoriteCard } from "../components/card/FavoriteCard";
 import { Toast } from "../components/ui/Toast";
-import { getFavoriteMovies, toggleFavoriteMovie } from "../services/favoriteService";
 import { IMAGE_BASE_URL } from "../services/tmdb";
+import { useFavorites } from "../context/FavoriteContext";
 
 const FavoritePage = () => {
     const navigate = useNavigate();
-    const [favorites, setFavorites] = useState([]);
+    const {favorites, toggleFavorite} = useFavorites();
     const [showToast, setShowToast] = useState(false);
 
-    const loadFavorites = () => {
-        setFavorites(getFavoriteMovies());
-    };
-
-    useEffect(() => {
-        loadFavorites();
-    }, []);
-
-    const handleRemoveFavorite = (movie) => {
-
-        toggleFavoriteMovie(movie);
+const handleRemoveFavorite = (movie) => {
+        toggleFavorite(movie);
         setShowToast(true);
-
-
-        setTimeout(() => {
-        loadFavorites();
-        setShowToast(false);
-        }, 30);
+        setTimeout(() => setShowToast(false), 3000);
     };
 
     return (
