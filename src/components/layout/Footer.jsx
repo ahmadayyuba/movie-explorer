@@ -11,7 +11,7 @@ export const Footer = ({
             className="flex md:flex-row justify-between px-4 sm:px-6 md:px-20 py-6 min-h-[120px] bg-neutral-950  w-full border-neutral-800 select-none md:gap-10 gap-4 mx-auto max-w-[1220px] items-center"
         {...props}
         >
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
                 <Logo/>
             </div>
 
