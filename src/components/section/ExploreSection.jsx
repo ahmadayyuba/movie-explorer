@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from "react";
+import  {motion, stagger} from "framer-motion";
 
 import { getPopularMovies, IMAGE_BASE_URL} from "../../services/tmdb";
 import { MovieCard } from "../card/MovieCard";
+
+const containerVariants = {
+    hidden: {},
+    show: {
+        transition: {staggerChildren: 0.06},
+    },
+};
 
 export const  ExploreSection = ({onSelectMovie}) => {
     const [movies, setMovies] = useState([]);
@@ -69,9 +77,9 @@ export const  ExploreSection = ({onSelectMovie}) => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
                     {[...Array(10)].map((_, i) => (
                     <div key={i} className="animate-pulse flex flex-col gap-2"> 
-                    <div className="w-full aspect-[2/3] bg-neutral-800 rounded-2xl"></div>
-                    <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
-                    <div className="h-3 bg-neutral-800 rounded w-1/2"></div>
+                    <div className="w-full aspect-[2/3] bg-neutral-800 rounded-lg sm:rounded-2xl"></div>
+                    <div className="h-3 bg-neutral-800 rounded w-3/4"></div>
+                    <div className="h-2.5 bg-neutral-800 rounded w-1/2"></div>
                     </div>
                     ))}
                 </div>
@@ -86,7 +94,8 @@ export const  ExploreSection = ({onSelectMovie}) => {
             Explore More
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+        
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-6 sm:gap-6">
             {movies.map((item, index) => {
             const posterUrl = item.poster_path
                 ? `${IMAGE_BASE_URL}${item.poster_path}`
@@ -129,5 +138,5 @@ export const  ExploreSection = ({onSelectMovie}) => {
         </div>
 
         </section>
-    )
+    );
 };

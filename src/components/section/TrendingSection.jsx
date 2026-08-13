@@ -1,8 +1,16 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { getTrendingMovies, IMAGE_BASE_URL } from "../../services/tmdb";
 import { MovieCard } from "../card/MovieCard";
 
-export const TrendingSection = ({onSelectMovie}) => {
+const containerVariants = {
+    hidden: {},
+    show: {
+        transition: { staggerChildren: 0.06 },
+    },
+};
+
+export const TrendingSection = ({ onSelectMovie }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -22,10 +30,10 @@ export const TrendingSection = ({onSelectMovie}) => {
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
-            const scrollAmount = direction === "left" ? -500 : 600 ;
+            const scrollAmount = direction === "left" ? -500 : 600;
             carouselRef.current.scrollBy({
                 left: scrollAmount,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -40,7 +48,7 @@ export const TrendingSection = ({onSelectMovie}) => {
                             <div className="w-full aspect-[2/3] bg-neutral-800 rounded-2xl"></div>
                             <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
                             <div className="h-3 bg-neutral-800 rounded w-1/2"></div>
-                        </div>                                          
+                        </div>
                     ))}
                 </div>
             </section>
@@ -53,54 +61,52 @@ export const TrendingSection = ({onSelectMovie}) => {
                 Trending Now
             </h2>
 
-        {/* Grid Poster Film */}
-        <div className="relative">
-            
-            <button
-                onClick={() => handleScroll("left")}
-                className="absolute -left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
-                aria-label="Scroll Left"
-            >
-                <span className="-mt-0.5">‹</span>
-            </button>
+            <div className="relative">
+                <button
+                    onClick={() => handleScroll("left")}
+                    className="absolute -left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
+                    aria-label="Scroll Left"
+                >
+                    <span className="-mt-0.5">‹</span>
+                </button>
 
+                <motion.div
+                    ref={carouselRef}
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="flex items-center gap-2 sm:gap-2 md:gap-10 lg:gap-4 overflow-x-auto scrollbar-none scroll-smooth pb-4"
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                    {movies.slice(0, 20).map((item, index) => {
+                        const posterUrl = item.poster_path ? `${IMAGE_BASE_URL}${item.poster_path}` : undefined;
 
-            <div
-                ref={carouselRef}
-                className="flex items-center gap-8 sm:gap-6 overflow-x-auto scrollbar-none scroll-smooth pb-4"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none"}}
-            >
-                {movies.slice(0,20).map((item, index) => {
-                    const posterUrl = item.poster_path
-                    ? `${IMAGE_BASE_URL}${item.poster_path}`
-                    : undefined;
+                        const ratingFormatted = item.vote_average ? `${item.vote_average.toFixed(1)}/10` : "N/A";
 
-                    const ratingFormatted = item.vote_average
-                    ? `${item.vote_average.toFixed(1)}/10`
-                    : "N/A"
-
-                    return (
-                        <MovieCard
-                            key={item.id}
-                            title={item.title || item.name}
-                            rating={ratingFormatted}
-                            posterUrl={posterUrl}
-                            rank={index + 1}
-                            onClick={() => onSelectMovie && onSelectMovie(item.id)}
+                        return (
+                            <div key={item.id} className="w-[calc(33.333%-6px)] sm:w-[170px] lg:w-[200px] shrink-0">
+                            <MovieCard
+                                key={item.id}
+                                title={item.title || item.name}
+                                rating={ratingFormatted}
+                                posterUrl={posterUrl}
+                                rank={index + 1}
+                                onClick={() => onSelectMovie && onSelectMovie(item.id)}
                             />
+                            </div>
                         );
-                })}
-            </div>
+                    })}
+                </motion.div>
 
-            <button
-                onClick={() => handleScroll("right")}
-                className="absolute -right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
-                aria-label="Scroll Right"
-            >
-            <span className="-mt-0.5">›</span>
+                <button
+                    onClick={() => handleScroll("right")}
+                    className="absolute -right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-neutral-900/90 border border-neutral-700 text-white flex items-center justify-center leading-none text-xl font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-neutral-800 hover:scale-110 cursor-pointer hidden md:flex shadow-xl select-none"
+                    aria-label="Scroll Right"
+                >
+                    <span className="-mt-0.5">›</span>
                 </button>
             </div>
         </section>
     );
 };
-

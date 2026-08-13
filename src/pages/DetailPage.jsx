@@ -9,17 +9,18 @@ import { CastCard } from "../components/card/CastCard";
 import { Toast } from "../components/ui/Toast";
 import { StarBoldIcon, VideoIcon, HappyIcon, CalendarIcon } from "../components/icons/icons";
 import { useFavorites } from "../context/FavoriteContext";
-import { getMovieDetails, IMAGE_BASE_URL } from "../services/tmdb";
+import { getMovieDetails, getMovieTrailerKey, IMAGE_BASE_URL } from "../services/tmdb";
+
 const DetailPage = () => {
     const { movieId } = useParams();
     const navigate = useNavigate();
 
     const [movie, setMovie] = useState(null);
+    const [trailerKey, setTrailerKey] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showToast, setShowToast] = useState(false);
 
-
-    const {toggleFavorite, checkIsFavorite} = useFavorites();
+    const { toggleFavorite, checkIsFavorite } = useFavorites();
     const isFavorite = checkIsFavorite(movieId);
 
     useEffect(() => {
@@ -27,11 +28,15 @@ const DetailPage = () => {
             try {
                 setLoading(true);
                 if (movieId) {
-                    const data = await getMovieDetails(movieId);
+                    const [data, key] = await Promise.all([
+                        getMovieDetails(movieId),
+                        getMovieTrailerKey(movieId),
+                    ]);
                     setMovie(data);
+                    setTrailerKey(key);
                 }
             } catch (error) {
-                console.error("Error fetching movie details:", error);
+                console.error("Error fetching movie details or trailer:", error);
             } finally {
                 setLoading(false);
             }
@@ -40,6 +45,19 @@ const DetailPage = () => {
         fetchDetails();
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [movieId]);
+
+    // Handler untuk langsung membuka tab baru ke YouTube
+    const handleWatchTrailer = () => {
+        if (trailerKey) {
+            window.open(
+                `https://www.youtube.com/watch?v=${trailerKey}`,
+                "_blank",
+                "noopener,noreferrer"
+            );
+        } else {
+            alert("Maaf, trailer untuk film ini belum tersedia di TMDB.");
+        }
+    };
 
     const handleFavoriteToggle = () => {
         if (!movie) return;
@@ -86,7 +104,7 @@ const DetailPage = () => {
                 <Header />
             </div>
 
-            <div className="relative aspect-[16/9] md:aspect-[16/9] md:h-auto h-[320px] sm:h[400px] overflow-hidden">
+            <div className="relative aspect-[16/9] md:aspect-[16/9] md:h-auto h-[320px] sm:h-[400px] overflow-hidden">
                 <img
                     src={backdropUrl}
                     alt={movie.title || movie.name}
@@ -114,7 +132,12 @@ const DetailPage = () => {
                         </div>
 
                         <div className="flex items-center gap-3 py-1 w-full justify-center md:justify-start">
-                            <Button variant="primary" icon={VideoIcon} className="flex-1 md:flex-none !w-auto">
+                            <Button
+                                variant="primary"
+                                icon={VideoIcon}
+                                className="flex-1 md:flex-none !w-auto cursor-pointer"
+                                onClick={handleWatchTrailer}
+                            >
                                 Watch Trailer
                             </Button>
                             <FavoriteButton active={isFavorite} onClick={handleFavoriteToggle} />
@@ -134,6 +157,21 @@ const DetailPage = () => {
                         {movie.overview || "No overview available for this movie."}
                     </p>
                 </section>
+
+                {/* Section Embedded Video Trailer */}
+                {trailerKey && (
+                    <section className="w-full mt-10 md:mt-12 flex flex-col gap-4 text-left">
+                        <h2 className="text-xl md:text-3xl font-bold text-white">Official Trailer</h2>
+                        <div className="w-full aspect-video rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${trailerKey}`}
+                                title="Official Trailer"
+                                className="w-full h-full border-none"
+                                allowFullScreen
+                            />
+                        </div>
+                    </section>
+                )}
 
                 <section className="w-full mt-10 md:mt-12 flex flex-col gap-6">
                     <h2 className="text-xl md:text-3xl font-bold text-white">Cast & Crew</h2>

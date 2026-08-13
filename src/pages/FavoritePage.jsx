@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
 import { Button } from "../components/ui/Button";
@@ -10,10 +11,10 @@ import { useFavorites } from "../context/FavoriteContext";
 
 const FavoritePage = () => {
     const navigate = useNavigate();
-    const {favorites, toggleFavorite} = useFavorites();
+    const { favorites, toggleFavorite } = useFavorites();
     const [showToast, setShowToast] = useState(false);
 
-const handleRemoveFavorite = (movie) => {
+    const handleRemoveFavorite = (movie) => {
         toggleFavorite(movie);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
@@ -37,35 +38,34 @@ const handleRemoveFavorite = (movie) => {
                         <div className="text-6xl mb-2">🎬</div>
                         <h2 className="text-xl font-semibold text-white">Data Empty</h2>
                         <p className="text-neutral-400 text-sm -mt-2">You don't have a favorite movie yet</p>
-                        <Button 
-                            variant="primary" 
-                            onClick={() => navigate("/")}
-                            className="mt-2 !w-auto"
-                        >
+                        <Button variant="primary" onClick={() => navigate("/")} className="mt-2 !w-auto">
                             Explore Movies
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex flex-col gap-6 w-full">
-                        {favorites.map((movie) => {
-                            const posterUrl = movie.poster_path 
-                                ? `${IMAGE_BASE_URL}${movie.poster_path}` 
-                                : "https://via.placeholder.com/300x450";
-                            const rating = movie.vote_average ? `${movie.vote_average.toFixed(1)}/10` : "N/A";
 
-                            return (
-                                <FavoriteCard
-                                    key={movie.id}
-                                    title={movie.title}
-                                    rating={rating}
-                                    description={movie.overview || "No overview available."}
-                                    posterUrl={posterUrl}
-                                    isFavorite={true}
-                                    onWatchTrailer={() => navigate(`/movie/${movie.id}`)}
-                                    onFavoriteClick={() => handleRemoveFavorite(movie)}
-                                />
-                            );
-                        })}
+                    <div className="flex flex-col gap-6 w-full">
+                        <AnimatePresence mode="popLayout">
+                            {favorites.map((movie) => {
+                                const posterUrl = movie.poster_path
+                                    ? `${IMAGE_BASE_URL}${movie.poster_path}`
+                                    : "https://via.placeholder.com/300x450";
+                                const rating = movie.vote_average ? `${movie.vote_average.toFixed(1)}/10` : "N/A";
+
+                                return (
+                                    <FavoriteCard
+                                        key={movie.id}
+                                        title={movie.title}
+                                        rating={rating}
+                                        description={movie.overview || "No overview available."}
+                                        posterUrl={posterUrl}
+                                        isFavorite={true}
+                                        onWatchTrailer={() => navigate(`/movie/${movie.id}`)}
+                                        onFavoriteClick={() => handleRemoveFavorite(movie)}
+                                    />
+                                );
+                            })}
+                        </AnimatePresence>
                     </div>
                 )}
             </main>
