@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { SearchIcon, MenuIcon, XIcon, ArrowLeftIcon } from "../icons/icons";
 import { SearchBar } from "../search/SearchBar";
 import { Logo } from "./Logo";
@@ -7,25 +7,48 @@ import { Logo } from "./Logo";
 export const Header = () => {
     const navigate = useNavigate(); 
     const location = useLocation(); 
+    const [searchParams] = useSearchParams();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    
+    const currentQuery = searchParams.get("q") || "";
+    const [searchTerm, setSearchTerm] = useState(currentQuery);
+
+    useEffect(() => {
+        setSearchTerm(currentQuery);
+    }, [currentQuery]);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 20) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+            setIsScrolled(window.scrollY > 20);
         };
-
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-        const isActive = (path) => location.pathname === path;
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchTerm.trim()) {
+                navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+            } else if (location.pathname === "/search" && currentQuery) {
+                navigate("/search");
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm, navigate, location.pathname, currentQuery]);
+
+    // Handler untuk Tombol X (Clear Input)
+    const handleClearSearch = () => {
+        setSearchTerm("");
+        if (location.pathname === "/search") {
+            navigate("/search");
+        }
+    };
+
+    const isActive = (path) => location.pathname === path;
 
     return (
         <header 
@@ -37,26 +60,35 @@ export const Header = () => {
         > 
             <div className="max-w-[1120px] flex items-center justify-between mx-auto px-4 sm:px-6 lg:px-8 h-20">
 
-                {/* --- JIKA MOBILE SEARCH DIBUKA --- */}
+                {/* --- MOBILE SEARCH BAR --- */}
                 {isMobileSearchOpen ? ( 
                     <div className="flex items-center gap-3 w-full md:hidden transition-all duration-300">
-                        {/* Tombol Back berdiri sendiri */}
                         <button
                             type="button"
-                            onClick={() => setIsMobileSearchOpen(false)}
-                            className="text-neutral-300 hover:text-white p-1 cursor-pointer"
+                            onClick={() => {
+                                setIsMobileSearchOpen(false);
+                                setSearchTerm("");
+                            }}
+                            className="text-neutral-300 hover:text-white p-1 cursor-pointer shrink-0"
                             aria-label="Close search"
                         >
                             <ArrowLeftIcon className="w-6 h-6" />
                         </button>
 
-                        {/* SearchBar dipisah dari tag button */}
                         <div className="flex-1">
-                            <SearchBar placeholder="Search Movie" autoFocus />
+                            <SearchBar 
+                                placeholder="Search Movie" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onClear={() => {
+                                    setSearchTerm("");
+                                    navigate("/search");
+                                }}
+                            />
                         </div>
                     </div>
                 ) : ( 
-                    /* --- TAMPILAN NORMAL HEADER --- */
+                    /* --- NORMAL HEADER (TABLET & DESKTOP) --- */
                     <> 
                         <div className="flex items-center gap-10">
                             <button 
@@ -89,12 +121,17 @@ export const Header = () => {
                             </nav>
                         </div>
 
-                        {/* BAGIAN KANAN: SEARCH BAR DESKTOP */}
+                        {/* SEARCH BAR DESKTOP & TABLET */}
                         <div className="hidden md:block">
-                            <SearchBar placeholder="Search Movie" />
+                            <SearchBar 
+                                placeholder="Search Movie" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onClear={handleClearSearch}
+                            />
                         </div>
 
-                        {/* BAGIAN KANAN: TOMBOL MOBILE */}
+                        {/* TOMBOL SEARCH MOBILE */}
                         <div className="md:hidden flex items-center gap-3">
                             <button
                                 type="button"
@@ -121,6 +158,7 @@ export const Header = () => {
                 )}
             </div>
 
+            {/* NAV MENU MOBILE */}
             {isMenuOpen && !isMobileSearchOpen && (
                 <div className="md:hidden bg-neutral-950/95 border-b border-neutral-800 flex flex-col items-start px-6 py-6 gap-3 font-medium text-base transition-all duration-200 shadow-xl min-h-screen">
                     <button 

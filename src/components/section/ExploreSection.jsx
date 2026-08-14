@@ -96,14 +96,11 @@ export const  ExploreSection = ({onSelectMovie}) => {
 
         
         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-6 sm:gap-6">
-            {movies.map((item, index) => {
-            const posterUrl = item.poster_path
-                ? `${IMAGE_BASE_URL}${item.poster_path}`
-                : undefined;
-
-            const ratingFormatted = item.vote_average 
-                ? `${item.vote_average.toFixed(1)}/10`
-                : "N/A";
+            {movies
+                .filter((item) => item.vote_average > 0 && item.poster_path)
+                .map((item, index) => {
+                    const posterUrl = `${IMAGE_BASE_URL}${item.poster_path}`;
+                    const ratingFormatted = `${item.vote_average.toFixed(1)}/10`;
 
             return (
                 <MovieCard

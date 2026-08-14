@@ -1,10 +1,11 @@
 import React from "react";
-import {SearchIcon} from "../icons/icons";
+import {SearchIcon, XIcon} from "../icons/icons";
 
 export const SearchBar = ({
     placeholder = "Search movie",
     value,
     onChange,
+    onClear,
     children,
     ...props 
 }) => {
@@ -20,6 +21,16 @@ export const SearchBar = ({
                     className="w-full bg-transparent text-white text-sm outline-none placeholder-neutral-500"
                     {...props}
                 />
+
+                {value && (
+                    <button
+                        type="button"
+                        onClick={onClear}
+                        className="text-neutral-500 hover:text-white transition-colors cursor-pointer p-0.5"
+                    >
+                        <XIcon className="w-4 h-5"/>
+                    </button>
+                )}
             </div>
             {/* Render dropdown jika ada */}
             {children}

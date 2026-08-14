@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import FavoritePage from './pages/FavoritePage';
 import { FavoriteProvider } from './context/FavoriteContext';
+import { SearchPage } from './components/search/SearchPage'; // Pastikan file SearchPage.jsx memang ada di folder ini!
 
 export function App() {
   return (
@@ -13,6 +14,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/movie/:movieId" element={<DetailPage />} />
           <Route path="/favorites" element={<FavoritePage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Router>
     </FavoriteProvider>

@@ -50,10 +50,16 @@ export const searchMovies = async (query) => {
             `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=en-US&page=1`
         );
         const data = await response.json();
-        return data.results || [];
-    }   catch (error){
-        console.error("Error searching movies:", error)
-        return[];
+        
+        // Filter film tanpa rating / tanpa poster dari data API
+        const validMovies = (data.results || []).filter(
+            (movie) => movie.vote_average > 0 && movie.poster_path
+        );
+
+        return validMovies;
+    } catch (error) {
+        console.error("Error searching movies:", error);
+        return [];
     }
 };
 

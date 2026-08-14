@@ -144,7 +144,7 @@ const DetailPage = () => {
                         </div>
 
                         <div className="grid grid-cols-3 gap-3 md:gap-4 pt-2 w-full">
-                            <MovieInfoCard icon={StarBoldIcon} label="Rating" value={rating} />
+                            <MovieInfoCard icon={StarBoldIcon} label="Rating" value={rating} iconClassName="text-yellow-400"/>
                             <MovieInfoCard icon={VideoIcon} label="Genre" value={genres} />
                             <MovieInfoCard icon={HappyIcon} label="Age Limit" value={movie.adult ? "18+" : "13+"} />
                         </div>

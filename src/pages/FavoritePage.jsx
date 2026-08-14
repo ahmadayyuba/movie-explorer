@@ -8,6 +8,7 @@ import { FavoriteCard } from "../components/card/FavoriteCard";
 import { Toast } from "../components/ui/Toast";
 import { IMAGE_BASE_URL } from "../services/tmdb";
 import { useFavorites } from "../context/FavoriteContext";
+import { EmptyStateIcon } from "../components/icons/icons";
 
 const FavoritePage = () => {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const FavoritePage = () => {
 
                 {favorites.length === 0 ? (
                     <div className="w-full flex-1 flex flex-col items-center justify-center my-16 gap-4 text-center">
-                        <div className="text-6xl mb-2">🎬</div>
+                        <EmptyStateIcon className="w-48 h-48 -mb-2"/>
                         <h2 className="text-xl font-semibold text-white">Data Empty</h2>
                         <p className="text-neutral-400 text-sm -mt-2">You don't have a favorite movie yet</p>
                         <Button variant="primary" onClick={() => navigate("/")} className="mt-2 !w-auto">
