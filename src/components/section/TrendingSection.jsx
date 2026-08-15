@@ -1,53 +1,93 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { getTrendingMovies, IMAGE_BASE_URL } from "../../services/tmdb";
 import { MovieCard } from "../card/MovieCard";
+import { usePusherChannel } from "../../hooks/usePusherChannel"
 
 const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     show: {
-        transition: { staggerChildren: 0.06 },
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.1,
+        },
+    },
+};
+
+const cardItemVariants = {
+    hidden: { opacity: 0, y: 15, scale: 0.96 },
+    show: { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        transition: { duration: 0.35, ease: "easeOut" } 
     },
 };
 
 export const TrendingSection = ({ onSelectMovie }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isSlowConnection, setIsSlowConnection] = useState(false);
 
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
 
     const carouselRef = useRef(null);
 
-    // Cek posisi scroll untuk visibilitas tombol
-    const checkScrollPosition = () => {
+    const checkScrollPosition = useCallback(() => {
         if (carouselRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
             setCanScrollLeft(scrollLeft > 10);
             setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
         }
-    };
+    }, []);
 
     useEffect(() => {
+        let isMounted = true;
+        
+        const slowTimer = setTimeout(() => {
+            if (loading) setIsSlowConnection(true);
+        }, 3000);
+
         const fetchTrending = async () => {
             setLoading(true);
             const data = await getTrendingMovies();
-            if (data && data.length > 0) {
-                // Filter film valid (rating > 0 & ada poster)
-                const filteredData = data.filter((m) => m.vote_average > 0 && m.poster_path);
-                setMovies(filteredData);
+            if (isMounted) {
+                if (data && data.length > 0) {
+                    const filteredData = data.filter((m) => m.vote_average > 0 && m.poster_path);
+                    setMovies(filteredData);
+                }
+                setLoading(false);
+                setIsSlowConnection(false);
+                clearTimeout(slowTimer);
             }
-            setLoading(false);
         };
+
         fetchTrending();
+
+        return () => {
+            isMounted = false;
+            clearTimeout(slowTimer);
+        };
     }, []);
 
+    const handleRealtimeUpdate = useCallback((newData) => {
+        if (newData && newData.movie) {
+            setMovies((prevMovies) => {
+                const exists = prevMovies.some((m) => m.id === newData.movie.id);
+                if (exists) return prevMovies;
+                return [newData.movie, ...prevMovies.slice(0, 19)];
+            });
+        }
+    }, []);
+
+    usePusherChannel("trending-channel", "trending-updated", handleRealtimeUpdate);
     useEffect(() => {
         const carouselEl = carouselRef.current;
         if (!carouselEl) return;
 
         checkScrollPosition();
-
         carouselEl.addEventListener("scroll", checkScrollPosition);
         window.addEventListener("resize", checkScrollPosition);
 
@@ -55,7 +95,7 @@ export const TrendingSection = ({ onSelectMovie }) => {
             carouselEl.removeEventListener("scroll", checkScrollPosition);
             window.removeEventListener("resize", checkScrollPosition);
         };
-    }, [movies, loading]);
+    }, [movies, loading, checkScrollPosition]);
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
@@ -63,30 +103,16 @@ export const TrendingSection = ({ onSelectMovie }) => {
             const scrollAmount = 500;
 
             if (direction === "right") {
-                // Jika sudah mendekati/menyentuh ujung kanan, reset scroll ke paling awal (looping)
                 if (scrollLeft + clientWidth >= scrollWidth - 15) {
-                    carouselRef.current.scrollTo({
-                        left: 0,
-                        behavior: "smooth",
-                    });
+                    carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
                 } else {
-                    carouselRef.current.scrollBy({
-                        left: scrollAmount,
-                        behavior: "smooth",
-                    });
+                    carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
                 }
             } else {
-                // Scroll ke kiri
                 if (scrollLeft <= 15) {
-                    carouselRef.current.scrollTo({
-                        left: scrollWidth,
-                        behavior: "smooth",
-                    });
+                    carouselRef.current.scrollTo({ left: scrollWidth, behavior: "smooth" });
                 } else {
-                    carouselRef.current.scrollBy({
-                        left: -scrollAmount,
-                        behavior: "smooth",
-                    });
+                    carouselRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
                 }
             }
         }
@@ -95,13 +121,20 @@ export const TrendingSection = ({ onSelectMovie }) => {
     if (loading) {
         return (
             <section className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-                <h2 className="text-2xl font-bold text-white mb-6">Trending Now</h2>
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-white">Trending Now</h2>
+                    {isSlowConnection && (
+                        <span className="text-xs text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20 animate-pulse">
+                            Koneksi lambat, memuat data...
+                        </span>
+                    )}
+                </div>
                 <div className="flex gap-4 overflow-hidden">
                     {[...Array(5)].map((_, i) => (
                         <div key={i} className="animate-pulse flex flex-col gap-2 w-[180px] sm:w-[170px] shrink-0">
-                            <div className="w-full aspect-[2/3] bg-neutral-800 rounded-2xl"></div>
-                            <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
-                            <div className="h-3 bg-neutral-800 rounded w-1/2"></div>
+                            <div className="w-full aspect-[2/3] bg-neutral-900 rounded-2xl"></div>
+                            <div className="h-4 bg-neutral-900 rounded w-3/4"></div>
+                            <div className="h-3 bg-neutral-900 rounded w-1/2"></div>
                         </div>
                     ))}
                 </div>
@@ -115,26 +148,25 @@ export const TrendingSection = ({ onSelectMovie }) => {
                 Trending Now
             </h2>
 
-            <div className="relative group">
-                {/* Tombol Navigasi Kiri */}
+            <div className="relative group px-1 sm:px-0">
+                {/* Tombol Navigasi Kiri (Aktif Mobile & Desktop) */}
                 {canScrollLeft && (
                     <button
                         onClick={() => handleScroll("left")}
-                        className="absolute -left-5 sm:-left-6 md:-left-7 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-white items-center justify-center leading-none text-xl font-bold hover:bg-neutral-800 hover:scale-105 active:scale-95 transition-all cursor-pointer hidden md:flex shadow-2xl backdrop-blur-sm"
+                        className="absolute left-1 sm:-left-6 md:-left-7 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-white flex items-center justify-center leading-none text-base sm:text-xl font-bold hover:bg-neutral-800 hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-2xl backdrop-blur-sm"
                         aria-label="Scroll Left"
                     >
                         <span className="-mt-0.5">‹</span>
                     </button>
                 )}
 
-                {/* Container List Film */}
+                {/* Container List Film (Di Mobile Tampil 2 Card Pas = calc(50%-6px)) */}
                 <motion.div
                     ref={carouselRef}
                     variants={containerVariants}
                     initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-100px" }}
-                    className="flex items-center gap-2 sm:gap-2 md:gap-3 lg:gap-4 overflow-x-auto scrollbar-none scroll-smooth pb-4"
+                    animate="show"
+                    className="flex items-center gap-3 sm:gap-4 overflow-x-auto scrollbar-none scroll-smooth pb-4"
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                     {movies.slice(0, 20).map((item, index) => {
@@ -142,7 +174,11 @@ export const TrendingSection = ({ onSelectMovie }) => {
                         const ratingFormatted = item.vote_average ? `${item.vote_average.toFixed(1)}/10` : "N/A";
 
                         return (
-                            <div key={item.id} className="w-[calc(33.333%-6px)] sm:w-[170px] lg:w-[200px] shrink-0">
+                            <motion.div 
+                                key={item.id} 
+                                variants={cardItemVariants}
+                                className="w-[calc(50%-6px)] sm:w-[170px] lg:w-[200px] shrink-0"
+                            >
                                 <MovieCard
                                     title={item.title || item.name}
                                     rating={ratingFormatted}
@@ -150,16 +186,16 @@ export const TrendingSection = ({ onSelectMovie }) => {
                                     rank={index + 1}
                                     onClick={() => onSelectMovie && onSelectMovie(item.id)}
                                 />
-                            </div>
+                            </motion.div>
                         );
                     })}
                 </motion.div>
 
-                {/* Tombol Navigasi Kanan */}
+                {/* Tombol Navigasi Kanan (Aktif Mobile & Desktop) */}
                 {canScrollRight && (
                     <button
                         onClick={() => handleScroll("right")}
-                        className="absolute -right-5 sm:-right-6 md:-right-7 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-white items-center justify-center leading-none text-xl font-bold hover:bg-neutral-800 hover:scale-105 active:scale-95 transition-all cursor-pointer hidden md:flex shadow-2xl backdrop-blur-sm"
+                        className="absolute right-1 sm:-right-6 md:-right-7 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-white flex items-center justify-center leading-none text-base sm:text-xl font-bold hover:bg-neutral-800 hover:scale-105 active:scale-95 transition-all cursor-pointer flex shadow-2xl backdrop-blur-sm"
                         aria-label="Scroll Right"
                     >
                         <span className="-mt-0.5">›</span>

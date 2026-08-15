@@ -6,13 +6,20 @@ export const SearchBar = ({
     value,
     onChange,
     onClear,
+    onSubmit,
     children,
     ...props 
 }) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (onSubmit) {
+            onSubmit(e);
+        }
+    };
+
     return (
-        <div className="relative w-full max-w-80">
-            <div className="w-full h-12 bg-neutral-900 rounded-2xl flex items-center px-5 gap-3">
-                <SearchIcon className="w-5 h-5 text-neutral-500 shrink-0" />
+        <form onSubmit={handleSubmit} className="relative w-full max-w-80">
+            <div className="w-full h-12 bg-neutral-900 border border-neutral-700/80 rounded-2xl flex items-center px-4 gap-3 focus-within:border-neutral-500 transition-all">
                 <input 
                     type="text"
                     placeholder={placeholder}
@@ -31,9 +38,18 @@ export const SearchBar = ({
                         <XIcon className="w-4 h-5"/>
                     </button>
                 )}
+
+                {/* Tombol Search (Submit) */}
+                <button
+                    type="submit"
+                    className="p-1.5 rounded-full bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 transition-all cursor-pointer shrink-0"
+                    aria-label="Search"
+                >
+                    <SearchIcon className="w-4 h-4" />
+                </button>
             </div>
             {/* Render dropdown jika ada */}
             {children}
-        </div>
+        </form>
     );
 };  

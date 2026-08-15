@@ -28,18 +28,13 @@ export const Header = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (searchTerm.trim()) {
-                navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
-            } else if (location.pathname === "/search" && currentQuery) {
-                navigate("/search");
-            }
-        }, 300);
-
-        return () => clearTimeout(timer);
-    }, [searchTerm, navigate, location.pathname, currentQuery]);
-
+    // Function submit saat tekan Enter atau Klik Tombol Kaca Pembesar
+    const handleSearchSubmit = () => {
+        if (searchTerm.trim()) {
+            navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+        }
+    };
+    
     // Handler untuk Tombol X (Clear Input)
     const handleClearSearch = () => {
         setSearchTerm("");
@@ -76,14 +71,13 @@ export const Header = () => {
                         </button>
 
                         <div className="flex-1">
+                            {/* PENAMBAHAN: onSubmit di Mobile SearchBar */}
                             <SearchBar 
                                 placeholder="Search Movie" 
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                onClear={() => {
-                                    setSearchTerm("");
-                                    navigate("/search");
-                                }}
+                                onClear={handleClearSearch}
+                                onSubmit={handleSearchSubmit}
                             />
                         </div>
                     </div>
@@ -121,13 +115,14 @@ export const Header = () => {
                             </nav>
                         </div>
 
-                        {/* SEARCH BAR DESKTOP & TABLET */}
+                        {/* PENAMBAHAN: onSubmit di Desktop SearchBar */}
                         <div className="hidden md:block">
                             <SearchBar 
                                 placeholder="Search Movie" 
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 onClear={handleClearSearch}
+                                onSubmit={handleSearchSubmit}
                             />
                         </div>
 
