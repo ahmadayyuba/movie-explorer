@@ -18,15 +18,17 @@ export const FavoriteCard = ({
 }) => {
     return (
         <motion.div 
+            {...props}
             layout
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             whileHover={{ scale: 1.01, y: -3 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            onClick={onCardClick}
+            onClick={(e) => {
+                if (onCardClick) onCardClick(e);
+            }}
             className="flex flex-col md:flex-row md:items-start justify-between items-start gap-4 max-w-290 md:gap-6 select-none p-4 md:p-4 rounded-2xl bg-neutral-950/40 border border-neutral-800/60 hover:border-neutral-700/80 hover:bg-neutral-900/80 hover:shadow-xl hover:shadow-neutral-950/50 cursor-pointer transition-all relative group"
-            {...props}
         >
             <div className="flex gap-6 md:gap-8 w-full md:contents">
                 {/* Poster Film */}

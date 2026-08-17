@@ -93,7 +93,7 @@ const DetailPage = () => {
     const castList = movie.credits?.cast?.slice(0, 9) || [];
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white flex flex-col relative select-none overflow-x-hidden">
+        <div className="min-h-screen bg-neutral-950 text-white flex flex-col relative overflow-x-hiddens select-text">
             {showToast && (
                 <div className="fixed top-30 left-1/2 -translate-x-1/2 z-50 transition-all duration-300">
                     <Toast message={isFavorite ? "Added to Favorites" : "Removed from Favorites"} />
