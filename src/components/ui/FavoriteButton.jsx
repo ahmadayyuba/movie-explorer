@@ -5,14 +5,14 @@ export const FavoriteButton = ({ active = false, onClick, ...props }) => {
     return (
         <button 
             type="button" 
-            className="bg-neutral-800 border rounded-full border-neutral-900 p-2 hover:bg-neutral-700 transition-colors cursor-pointer" 
+            className="bg-neutral-800 border rounded-full border-neutral-900 p-3 hover:bg-neutral-700 transition-colors cursor-pointer" 
             onClick={onClick}
             {...props}
         >
             {active ? (
-                <HeartBoldIcon className="w-5 h-5 text-red-700" />
+                <HeartBoldIcon className="w-6 h-6 text-red-700" />
             ) : (
-                <HeartIcon className="w-5 h-5 text-neutral-400"/>
+                <HeartIcon className="w-6 h-6 text-neutral-400"/>
             )}
         </button>
     );

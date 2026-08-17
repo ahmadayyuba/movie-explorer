@@ -44,7 +44,6 @@ const FavoritePage = () => {
                         </Button>
                     </div>
                 ) : (
-
                     <div className="flex flex-col gap-6 w-full">
                         <AnimatePresence mode="popLayout">
                             {favorites.map((movie) => {
@@ -61,6 +60,7 @@ const FavoritePage = () => {
                                         description={movie.overview || "No overview available."}
                                         posterUrl={posterUrl}
                                         isFavorite={true}
+                                        onCardClick={() => navigate(`/movie/${movie.id}`)}
                                         onWatchTrailer={() => navigate(`/movie/${movie.id}`)}
                                         onFavoriteClick={() => handleRemoveFavorite(movie)}
                                     />
