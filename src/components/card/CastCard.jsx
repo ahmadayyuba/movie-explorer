@@ -14,7 +14,7 @@ export const CastCard = ({
             <img 
                 src={imageUrl} 
                 alt={name} 
-                className="w-8xl h-10xl rounded-lg" 
+                className="w-7xl h-9xl rounded-lg" 
             />
 
             <div className="text-white p-2">
