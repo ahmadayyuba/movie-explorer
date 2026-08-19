@@ -78,7 +78,7 @@ export const ScrollButton = () => {
             onClick={handleClick}
             aria-label={actionLabel}
             title={actionLabel}
-            className="group fixed right-4 bottom-5 z-50 h-15 w-15 rounded-full p-[2px] shadow-xl transition-transform duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-500 active:scale-95 sm:right-6 sm:bottom-6"
+            className="group fixed right-4 bottom-5 z-50 h-11 w-11 rounded-full p-[2px] shadow-xl transition-transform duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-500 active:scale-95 sm:right-6 sm:bottom-6"
             style={{
                 background: `conic-gradient(
                     rgb(220 38 38) ${scrollProgress * 3.6}deg,
