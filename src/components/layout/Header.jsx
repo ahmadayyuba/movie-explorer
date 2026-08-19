@@ -28,6 +28,18 @@ export const Header = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsMobileSearchOpen(false);
+                setIsMenuOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     // Function submit saat tekan Enter atau Klik Tombol Kaca Pembesar
     const handleSearchSubmit = () => {
         if (searchTerm.trim()) {

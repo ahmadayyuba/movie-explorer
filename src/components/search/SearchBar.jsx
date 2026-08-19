@@ -18,7 +18,7 @@ export const SearchBar = ({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="relative w-full max-w-80">
+        <form onSubmit={handleSubmit} className="relative w-full lg:max-w-72 md:max-w-64">
             <div className="w-full h-12 bg-neutral-900 border border-neutral-700/80 rounded-2xl flex items-center px-4 gap-3 focus-within:border-neutral-500 transition-all">
                 <input 
                     type="text"

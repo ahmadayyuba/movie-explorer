@@ -35,6 +35,11 @@ export const TrendingSection = ({ onSelectMovie }) => {
 
     const carouselRef = useRef(null);
 
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeftPos, setScrollLeftPos] = useState(0);
+    const [hasDragged, setHasDragged] = useState(false);
+
     const checkScrollPosition = useCallback(() => {
         if (carouselRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
@@ -56,7 +61,13 @@ export const TrendingSection = ({ onSelectMovie }) => {
             if (isMounted) {
                 if (data && data.length > 0) {
                     const filteredData = data.filter((m) => m.vote_average > 0 && m.poster_path);
-                    setMovies(filteredData);
+
+                    let finalMovies = [...filteredData];
+                    if (finalMovies.length < 20) {
+                        const fallbackMovies = data.filter((m) => !filteredData.some((f) => f.id === m.id));
+                        finalMovies = [...finalMovies, ...fallbackMovies];
+                    }
+                    setMovies(finalMovies.slice(0, 20));
                 }
                 setLoading(false);
                 setIsSlowConnection(false);
@@ -83,6 +94,7 @@ export const TrendingSection = ({ onSelectMovie }) => {
     }, []);
 
     usePusherChannel("trending-channel", "trending-updated", handleRealtimeUpdate);
+
     useEffect(() => {
         const carouselEl = carouselRef.current;
         if (!carouselEl) return;
@@ -96,6 +108,41 @@ export const TrendingSection = ({ onSelectMovie }) => {
             window.removeEventListener("resize", checkScrollPosition);
         };
     }, [movies, loading, checkScrollPosition]);
+
+    const handleMouseDown = (e) => {
+        if (!carouselRef.current) return;
+
+        // FIX #1: Cegah native browser drag-and-drop (ghost image)
+        // Ini WAJIB dipanggil di titik paling awal, sebelum browser
+        // sempat menginisiasi native dragstart pada elemen <img>.
+        e.preventDefault();
+
+        setIsDragging(true);
+        setHasDragged(false);
+        setStartX(e.pageX - carouselRef.current.offsetLeft);
+        setScrollLeftPos(carouselRef.current.scrollLeft);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging || !carouselRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - carouselRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        
+        if (Math.abs(walk) > 5) {
+            setHasDragged(true); 
+        }
+        
+        carouselRef.current.scrollLeft = scrollLeftPos - walk;
+    };
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
@@ -149,7 +196,6 @@ export const TrendingSection = ({ onSelectMovie }) => {
             </h2>
 
             <div className="relative group px-1 sm:px-0">
-                {/* Tombol Navigasi Kiri (Aktif Mobile & Desktop) */}
                 {canScrollLeft && (
                     <button
                         onClick={() => handleScroll("left")}
@@ -160,16 +206,21 @@ export const TrendingSection = ({ onSelectMovie }) => {
                     </button>
                 )}
 
-                {/* Container List Film (Di Mobile Tampil 2 Card Pas = calc(50%-6px)) */}
                 <motion.div
                     ref={carouselRef}
                     variants={containerVariants}
                     initial="hidden"
                     animate="show"
-                    className="flex items-center gap-3 sm:gap-4 overflow-x-auto scrollbar-none scroll-smooth pb-4"
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}
+                    className={`flex items-center gap-3 sm:gap-4 overflow-x-auto scrollbar-none pb-4 ${
+                        isDragging ? "cursor-grabbing scroll-auto" : "cursor-grab scroll-smooth"
+                    }`}
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
-                    {movies.slice(0, 20).map((item, index) => {
+                    {movies.map((item, index) => {
                         const posterUrl = item.poster_path ? `${IMAGE_BASE_URL}${item.poster_path}` : undefined;
                         const ratingFormatted = item.vote_average ? `${item.vote_average.toFixed(1)}/10` : "N/A";
 
@@ -184,14 +235,17 @@ export const TrendingSection = ({ onSelectMovie }) => {
                                     rating={ratingFormatted}
                                     posterUrl={posterUrl}
                                     rank={index + 1}
-                                    onClick={() => onSelectMovie && onSelectMovie(item.id)}
+                                    onClick={() => {
+                                        if (!hasDragged && onSelectMovie) {
+                                            onSelectMovie(item.id);
+                                        }
+                                    }}
                                 />
                             </motion.div>
                         );
                     })}
                 </motion.div>
 
-                {/* Tombol Navigasi Kanan (Aktif Mobile & Desktop) */}
                 {canScrollRight && (
                     <button
                         onClick={() => handleScroll("right")}
